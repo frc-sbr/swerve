@@ -1,7 +1,10 @@
+#pragma once
 #include <frc/AnalogInput.h>
 #include <frc/controller/PIDController.h>
 #include <frc/controller/ProfiledPIDController.h>
 #include <frc/drive/RobotDriveBase.h>
+
+#include <frc/kinematics/SwerveModuleState.h>
 
 #include <rev/CANSparkMax.h>
 #include <rev/CANSparkMaxLowLevel.h>
@@ -48,6 +51,11 @@ public:
     double GetAbsoluteEncoderRad();
 
     void ResetEncoders();
+
+    frc::SwerveModuleState GetState();
+    void SetDesiredState(frc::SwerveModuleState state);
+
+    void Stop();
 
 
 private:
