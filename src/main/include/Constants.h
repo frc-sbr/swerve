@@ -27,7 +27,7 @@ public:
     // Distance between right and left wheels
     static constexpr double kWheelBase = convert<units::inches, units::meters>(30); // TODO: check with mechanical
     // Distance between front and back wheels
-    static const frc::SwerveDriveKinematics<4> kDriveKinematics;
+    static const frc::SwerveDriveKinematics<4> kDriveKinematics; // TODO: add back stuff to subsystem.cpp
 
     // TODO: the following data is ALL WRONG. I COPY PASTED THIS FROM A YOUTUBE VIDEO. I AM NOT LOOKING FORWARD TO FIGURING ALL OF THIS OUT.
     static constexpr int kFrontLeftDriveMotorPort = 8;
