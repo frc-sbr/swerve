@@ -14,18 +14,18 @@
 
 
 SwerveModule::SwerveModule(int driveMotorId, int turningMotorId, bool driveMotorReversed, bool turningMotorReversed,
-                           int absoluteEncoderId, double absoluteEncoderOffset, bool absoluteEncoderReversed) :
-        absoluteEncoderOffsetRad{absoluteEncoderOffset},
-        absoluteEncoderReversed{absoluteEncoderReversed},
-        absoluteEncoder{absoluteEncoderId},
-
+                 int absoluteEncoderId, double absoluteEncoderOffset, bool absoluteEncoderReversed) :
         driveMotor{driveMotorId, rev::CANSparkMaxLowLevel::MotorType::kBrushless},
         turningMotor{turningMotorId, rev::CANSparkMaxLowLevel::MotorType::kBrushless},
 
         driveEncoder{driveMotor.GetEncoder()},
         turningEncoder{turningMotor.GetEncoder()},
 
-        turningPidController{Constants::kPTurning, 0, 0} 
+        absoluteEncoder{absoluteEncoderId},
+        absoluteEncoderReversed{absoluteEncoderReversed},
+        absoluteEncoderOffsetRad{absoluteEncoderOffset},
+
+        turningPidController{Constants::kPTurning, 0, 0}
 {
     driveMotor.SetInverted(driveMotorReversed);
     turningMotor.SetInverted(turningMotorReversed);
@@ -36,8 +36,6 @@ SwerveModule::SwerveModule(int driveMotorId, int turningMotorId, bool driveMotor
     turningEncoder.SetVelocityConversionFactor(Constants::kTurningEncoderRPM2RadPerSec);
 
     turningPidController.EnableContinuousInput(-M_PI, M_PI);
-
-    ResetEncoders();
 }
 
 
@@ -80,9 +78,10 @@ void SwerveModule::SetDesiredState(frc::SwerveModuleState state) {
         return;
     }
     state = frc::SwerveModuleState::Optimize(state, GetState().angle);
-    driveMotor.Set(1); // i have not gotten around to fixing the constants yet
+    driveMotor.Set(1); // TODO: replace with speedMetersPerSecond / maxMetersPerSecond
     turningMotor.Set(turningPidController.Calculate(GetTurningPosition(), state.angle.Radians().value()));
 }
+
 
 void SwerveModule::Stop() {
     driveMotor.Set(0);
