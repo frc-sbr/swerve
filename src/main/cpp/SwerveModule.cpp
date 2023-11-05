@@ -14,7 +14,7 @@
 
 
 SwerveModule::SwerveModule(int driveMotorId, int turningMotorId, bool driveMotorReversed, bool turningMotorReversed,
-    int absoluteEncoderId, double absoluteEncoderOffset, bool absoluteEncoderReversed) :
+    int absoluteEncoderId, radian_t absoluteEncoderOffset, bool absoluteEncoderReversed) :
         driveMotor{driveMotorId, rev::CANSparkMaxLowLevel::MotorType::kBrushless},
         turningMotor{turningMotorId, rev::CANSparkMaxLowLevel::MotorType::kBrushless},
         driveEncoder{driveMotor.GetEncoder()},
@@ -27,33 +27,33 @@ SwerveModule::SwerveModule(int driveMotorId, int turningMotorId, bool driveMotor
     driveMotor.SetInverted(driveMotorReversed);
     turningMotor.SetInverted(turningMotorReversed);
 
-    driveEncoder.SetPositionConversionFactor(Constants::kDriveEncoderRot2Meter);
-    driveEncoder.SetVelocityConversionFactor(Constants::kDriveEncoderRPM2MeterPerSec);
-    turningEncoder.SetPositionConversionFactor(Constants::kTurningEncoderRot2Rad);
-    turningEncoder.SetVelocityConversionFactor(Constants::kTurningEncoderRPM2RadPerSec);
+    driveEncoder.SetPositionConversionFactor(Constants::kDriveEncoderRot2Meter.value());
+    driveEncoder.SetVelocityConversionFactor(Constants::kDriveEncoderRPM2MeterPerSec.value());
+    turningEncoder.SetPositionConversionFactor(Constants::kTurningEncoderRot2Rad.value());
+    turningEncoder.SetVelocityConversionFactor(Constants::kTurningEncoderRPM2RadPerSec.value());
 
     turningPidController.EnableContinuousInput(-M_PI, M_PI);
 }
 
 
-double SwerveModule::GetDrivePosition() {
-    return driveEncoder.GetPosition();
+radian_t SwerveModule::GetDrivePosition() {
+    return radian_t{driveEncoder.GetPosition()};
 }
-double SwerveModule::GetTurningPosition() {
-    return turningEncoder.GetPosition();
-}
-
-
-double SwerveModule::GetDriveVelocity() {
-    return driveEncoder.GetVelocity();
-}
-double SwerveModule::GetTurningVelocity() {
-    return turningEncoder.GetVelocity();
+radian_t SwerveModule::GetTurningPosition() {
+    return radian_t{turningEncoder.GetPosition()};
 }
 
 
-double SwerveModule::GetAbsoluteEncoderRad() {
-    double angle = absoluteEncoder.GetVoltage() / frc::RobotController::GetVoltage5V();
+meters_per_second_t SwerveModule::GetDriveVelocity() {
+    return meters_per_second_t{driveEncoder.GetVelocity()};
+}
+meters_per_second_t SwerveModule::GetTurningVelocity() {
+    return meters_per_second_t{turningEncoder.GetVelocity()};
+}
+
+
+radian_t SwerveModule::GetAbsoluteEncoderRad() {
+    radian_t angle = radian_t{absoluteEncoder.GetVoltage() / frc::RobotController::GetVoltage5V()};
     angle *= 2 * M_PI;
     angle -= absoluteEncoderOffsetRad;
     return angle * (absoluteEncoderReversed ? -1.0 : 1.0);
@@ -61,22 +61,21 @@ double SwerveModule::GetAbsoluteEncoderRad() {
 
 void SwerveModule::ResetEncoders() {
     driveEncoder.SetPosition(0);
-    turningEncoder.SetPosition(GetAbsoluteEncoderRad());
+    turningEncoder.SetPosition(GetAbsoluteEncoderRad().value());
 }
 
 
 frc::SwerveModuleState SwerveModule::GetState() {
-  return {units::meters_per_second_t{GetDriveVelocity()},
-          units::radian_t{GetTurningPosition()}};
+    return {GetDriveVelocity(), GetTurningPosition()};
 }
 void SwerveModule::SetDesiredState(frc::SwerveModuleState state) {
-    if (units::math::abs(state.speed).value() < 0.001) {
+    if (units::math::abs(state.speed) < 0.001_mps) {
         Stop();
         return;
     }
     state = frc::SwerveModuleState::Optimize(state, GetState().angle);
-    driveMotor.Set(1); // TODO: replace with speedMetersPerSecond / maxMetersPerSecond
-    turningMotor.Set(turningPidController.Calculate(GetTurningPosition(), state.angle.Radians().value()));
+    driveMotor.Set(state.speed / DriveConstants::kPhysicalMaxSpeedMetersPerSecond);
+    turningMotor.Set(turningPidController.Calculate(GetTurningPosition().value(), state.angle.Radians().value()));
 }
 
 

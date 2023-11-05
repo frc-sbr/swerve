@@ -10,21 +10,27 @@
 #include <rev/CANSparkMaxLowLevel.h>
 #include <rev/SparkMaxRelativeEncoder.h>
 
+#include <units/length.h>
+
 #include "Constants.h"
+
+
+using namespace units;
+using namespace units::length;
 
 
 class SwerveModule {
 public:
     SwerveModule(int driveMotorId, int turningMotorId, bool driveMotorReversed, bool turningMotorReversed,
-                 int absoluteEncoderId, double absoluteEncoderOffset, bool absoluteEncoderReversed);
+                 int absoluteEncoderId, radian_t absoluteEncoderOffset, bool absoluteEncoderReversed);
 
-    double GetDrivePosition();
-    double GetTurningPosition();
+    radian_t GetDrivePosition();
+    radian_t GetTurningPosition();
 
-    double GetDriveVelocity();
-    double GetTurningVelocity();
+    meters_per_second_t GetDriveVelocity();
+    meters_per_second_t GetTurningVelocity();
 
-    double GetAbsoluteEncoderRad();
+    radian_t GetAbsoluteEncoderRad();
 
     void ResetEncoders();
 
@@ -43,7 +49,7 @@ private:
 
     frc::AnalogInput absoluteEncoder;
     bool absoluteEncoderReversed;
-    double absoluteEncoderOffsetRad;
+    radian_t absoluteEncoderOffsetRad;
 
     frc2::PIDController turningPidController;
 };
