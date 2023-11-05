@@ -14,8 +14,13 @@ private:
 public:
     RobotContainer() {
         swerveSubsystem.SetDefaultCommand(SwerveJoystickCmd{
-            swerveSubsystem,
-        });
+            &swerveSubsystem,
+            [&]() -> units::meters_per_second_t {-driverJoystick.GetRawAxis(OIConstants::kDriverYAxis);},
+            [&]() -> units::meters_per_second_t {driverJoystick.GetRawAxis(OIConstants::kDriverXAxis);},
+            [&]() -> units::radians_per_second_t {driverJoystick.GetRawAxis(OIConstants::kDriverRotAxis);},
+            [&]() -> bool {!driverJoystick.GetRawAxis(OIConstants::kDriverFieldOrientedButtonIdx);}});
+
+        ConfigureButtonBindings();
     }
 
     void ConfigureButtonBindings() {

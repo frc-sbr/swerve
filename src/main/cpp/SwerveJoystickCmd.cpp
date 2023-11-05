@@ -1,5 +1,6 @@
 #include <units/length.h>
 #include <frc2/command/CommandBase.h>
+#include <frc2/command/CommandHelper.h>
 #include <frc/filter/SlewRateLimiter.h>
 #include <functional>
 #include <frc/kinematics/ChassisSpeeds.h>
@@ -23,8 +24,6 @@ SwerveJoystickCmd::SwerveJoystickCmd(SwerveSubsystem* swerveSubsystem,
 {
     AddRequirements(swerveSubsystem);
 }
-
-void SwerveJoystickCmd::Initialize() {}
 
 void SwerveJoystickCmd::Execute() {
     units::meters_per_second_t xSpeed  = xSpdFunction();
@@ -53,8 +52,4 @@ void SwerveJoystickCmd::Execute() {
 
 void SwerveJoystickCmd::End(bool interrupted) {
     swerveSubsystem->StopModules();
-}
-
-bool SwerveJoystickCmd::IsFinished() {
-    return false;
 }

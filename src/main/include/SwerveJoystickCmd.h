@@ -1,5 +1,6 @@
 #include <units/length.h>
 #include <frc2/command/CommandBase.h>
+#include <frc2/command/CommandHelper.h>
 #include <frc/filter/SlewRateLimiter.h>
 #include <functional>
 #include <frc/kinematics/ChassisSpeeds.h>
@@ -10,7 +11,7 @@
 
 // TODO: I am not **completely** sure that the function overloads are correct (I've been following a really weird style).
 // If it seems like functions are NOT getting called, check...
-class SwerveJoystickCmd : public frc2::CommandBase {
+class SwerveJoystickCmd : public frc2::CommandHelper<frc2::CommandBase, SwerveJoystickCmd> {
 private:
     SwerveSubsystem* swerveSubsystem;
 
@@ -27,11 +28,7 @@ public:
         std::function<units::meters_per_second_t()> xSpdFunction, std::function<units::meters_per_second_t()> ySpdFunction,
         std::function<units::radians_per_second_t()>, std::function<bool()> fieldOrientedFunction);
 
-    void Initialize();
-
     void Execute();
 
     void End(bool interrupted);
-
-    bool IsFinished();
 };
