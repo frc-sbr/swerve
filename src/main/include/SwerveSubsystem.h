@@ -3,11 +3,12 @@
 #include <frc/geometry/Rotation2d.h>
 #include <frc/kinematics/SwerveModuleState.h>
 #include <frc/kinematics/SwerveDriveOdometry.h>
+#include <frc2/command/SubsystemBase.h>
 
 #include "SwerveModule.h"
 #include "Constants.h"
 
-class SwerveSubsystem {
+class SwerveSubsystem : public frc2::SubsystemBase {
 public:
     SwerveSubsystem();
 

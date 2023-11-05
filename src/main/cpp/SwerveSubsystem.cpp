@@ -2,6 +2,8 @@
 #include <frc/kinematics/SwerveDriveKinematics.h>
 #include <frc/geometry/Rotation2d.h>
 #include <frc/SPI.h>
+#include <thread>
+#include <chrono>
 
 #include "SwerveSubsystem.h"
 #include "Constants.h"
@@ -42,7 +44,10 @@ SwerveSubsystem::SwerveSubsystem() :
 
     gyro{frc::SPI::Port::kMXP}
 {
-
+    std::thread{[&](){
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        ZeroHeading();
+    }};
 }
 
 void SwerveSubsystem::ZeroHeading() {
@@ -71,6 +76,11 @@ void SwerveSubsystem::StopModules() {
 // https://github.com/Jagwires7443/Swerve/blob/master/src/main/cpp/subsystems/DriveSubsystem.cpp
 void SwerveSubsystem::SetModuleStates(wpi::array<frc::SwerveModuleState, 4>& desiredStates) {
     DriveConstants::kDriveKinematics.DesaturateWheelSpeeds(&desiredStates, meters_per_second_t{DriveConstants::kPhysicalMaxSpeedMetersPerSecond});
+
+    frontLeft.SetDesiredState(desiredStates[0]);
+    frontRight.SetDesiredState(desiredStates[1]);
+    backLeft.SetDesiredState(desiredStates[2]);
+    backRight.SetDesiredState(desiredStates[3]);
 }
 
 const frc::SwerveDriveKinematics<4> DriveConstants::kDriveKinematics{

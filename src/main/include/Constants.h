@@ -8,7 +8,6 @@ using namespace units;
 using namespace units::length;
 
 class Constants {
-private:
 public:
     static constexpr double kWheelDiameterMeters = convert<units::inches, units::meters>(4.0);
     static constexpr double kDriveMotorGearRatio = 1 / 6.75; // no idea where this number comes from (should be 1:6.75)
@@ -21,7 +20,6 @@ public:
 };
 
 class DriveConstants {
-private:
 public:
     static constexpr double kTrackWidth = convert<units::inches, units::meters>(30); // TODO: check with mechanical
     // Distance between right and left wheels
@@ -73,4 +71,16 @@ public:
         kPhysicalMaxAngularSpeedRadiansPerSecond / 4;
     static constexpr double kTeleDriveMaxAccelerationUnitsPerSecond = 3;
     static constexpr double kTeleDriveMaxAngularAccelerationUnitsPerSecond = 3;
+};
+
+class OIConstants {
+public:
+    static constexpr int kDriverControllerPort = 0;
+
+    static constexpr int kDriverYAxis = 1;
+    static constexpr int kDriverXAxis = 0;
+    static constexpr int kDriverRotAxis = 4;
+    static constexpr int kDriverFieldOrientedButtonIdx = 1;
+
+    static constexpr double kDeadband = 0.05;
 };

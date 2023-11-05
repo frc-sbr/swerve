@@ -14,17 +14,14 @@
 
 
 SwerveModule::SwerveModule(int driveMotorId, int turningMotorId, bool driveMotorReversed, bool turningMotorReversed,
-                 int absoluteEncoderId, double absoluteEncoderOffset, bool absoluteEncoderReversed) :
+    int absoluteEncoderId, double absoluteEncoderOffset, bool absoluteEncoderReversed) :
         driveMotor{driveMotorId, rev::CANSparkMaxLowLevel::MotorType::kBrushless},
         turningMotor{turningMotorId, rev::CANSparkMaxLowLevel::MotorType::kBrushless},
-
         driveEncoder{driveMotor.GetEncoder()},
         turningEncoder{turningMotor.GetEncoder()},
-
         absoluteEncoder{absoluteEncoderId},
         absoluteEncoderReversed{absoluteEncoderReversed},
         absoluteEncoderOffsetRad{absoluteEncoderOffset},
-
         turningPidController{Constants::kPTurning, 0, 0}
 {
     driveMotor.SetInverted(driveMotorReversed);
