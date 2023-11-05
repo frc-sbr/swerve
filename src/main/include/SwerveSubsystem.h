@@ -7,13 +7,17 @@
 
 #include "SwerveModule.h"
 #include "Constants.h"
+#include <units/length.h>
+#include <units/acceleration.h>
+
+using namespace units;
 
 class SwerveSubsystem : public frc2::SubsystemBase {
 public:
     SwerveSubsystem();
 
     void ZeroHeading();
-    double GetHeading();
+    degree_t GetHeading();
 
     frc::Rotation2d GetRotation2d();
 

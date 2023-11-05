@@ -1,4 +1,3 @@
-/*
 #include <frc/Joystick.h>
 #include "SwerveSubsystem.h"
 #include "SwerveJoystickCmd.h"
@@ -6,6 +5,8 @@
 #include <functional>
 
 #include "Constants.h"
+
+using namespace units;
 
 class RobotContainer {
 private:
@@ -16,10 +17,10 @@ public:
     RobotContainer() {
         swerveSubsystem.SetDefaultCommand(SwerveJoystickCmd{
             &swerveSubsystem,
-            [&]() -> units::meters_per_second_t {-driverJoystick.GetRawAxis(OIConstants::kDriverYAxis);},
-            [&]() -> units::meters_per_second_t {driverJoystick.GetRawAxis(OIConstants::kDriverXAxis);},
-            [&]() -> units::radians_per_second_t {driverJoystick.GetRawAxis(OIConstants::kDriverRotAxis);},
-            [&]() -> bool {!driverJoystick.GetRawAxis(OIConstants::kDriverFieldOrientedButtonIdx);}});
+            [&]() -> meters_per_second_t {return meters_per_second_t{-driverJoystick.GetRawAxis(OIConstants::kDriverYAxis)};},
+            [&]() -> meters_per_second_t {return meters_per_second_t{driverJoystick.GetRawAxis(OIConstants::kDriverXAxis)};},
+            [&]() -> radians_per_second_t {return radians_per_second_t{driverJoystick.GetRawAxis(OIConstants::kDriverRotAxis)};},
+            [&]() -> bool {return !driverJoystick.GetRawButton(OIConstants::kDriverFieldOrientedButtonIdx);}});
 
         ConfigureButtonBindings();
     }
@@ -27,8 +28,3 @@ public:
     void ConfigureButtonBindings() {
     }
 };
-
-int main() {
-    std::function<int()> func = []() -> int {return 1;};
-}
-*/

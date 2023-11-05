@@ -66,7 +66,10 @@ public:
     static constexpr radian_t kBackRightDriveAbsoluteEncoderOffsetRad = -4.811_rad;
 
     static constexpr meters_per_second_t kPhysicalMaxSpeedMetersPerSecond = 5_mps;
-    static constexpr radians_per_second_t kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * radian_t{2 * M_PI};
+    static constexpr radians_per_second_t kPhysicalMaxAngularSpeedRadiansPerSecond = radians_per_second_t{2 * 2 * M_PI};
+
+    static constexpr meters_per_second_t kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond / 4;
+    static constexpr radians_per_second_t kTeleDriveMaxAngularSpeedRadiansPerSecond = kPhysicalMaxAngularSpeedRadiansPerSecond / 4;
 
     static constexpr meters_per_second_squared_t kTeleDriveMaxAccelerationUnitsPerSecond = 3_mps_sq;
     static constexpr radians_per_second_squared_t kTeleDriveMaxAngularAccelerationUnitsPerSecond = 3_rad_per_s_sq;
@@ -81,5 +84,5 @@ public:
     static constexpr int kDriverRotAxis = 4;
     static constexpr int kDriverFieldOrientedButtonIdx = 1;
 
-    static constexpr double kDeadband = 0.05;
+    static constexpr meters_per_second_t kDeadband = 0.05_mps;
 };

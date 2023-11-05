@@ -53,12 +53,12 @@ SwerveSubsystem::SwerveSubsystem() :
 void SwerveSubsystem::ZeroHeading() {
     gyro.Reset();
 }
-double SwerveSubsystem::GetHeading() {
-    return fmod(gyro.GetAngle(), 360);
+degree_t SwerveSubsystem::GetHeading() {
+    return degree_t{fmod(gyro.GetAngle(), 360)}; //TODO: bad? idk no clue what fmod vs % distinction is
 }
 
 frc::Rotation2d SwerveSubsystem::GetRotation2d() {
-    return frc::Rotation2d{degree_t{GetHeading()}};
+    return frc::Rotation2d{GetHeading()};
 }
 
 
@@ -75,7 +75,7 @@ void SwerveSubsystem::StopModules() {
 }
 // https://github.com/Jagwires7443/Swerve/blob/master/src/main/cpp/subsystems/DriveSubsystem.cpp
 void SwerveSubsystem::SetModuleStates(wpi::array<frc::SwerveModuleState, 4>& desiredStates) {
-    DriveConstants::kDriveKinematics.DesaturateWheelSpeeds(&desiredStates, meters_per_second_t{DriveConstants::kPhysicalMaxSpeedMetersPerSecond});
+    DriveConstants::kDriveKinematics.DesaturateWheelSpeeds(&desiredStates, DriveConstants::kPhysicalMaxSpeedMetersPerSecond);
 
     frontLeft.SetDesiredState(desiredStates[0]);
     frontRight.SetDesiredState(desiredStates[1]);
@@ -84,7 +84,7 @@ void SwerveSubsystem::SetModuleStates(wpi::array<frc::SwerveModuleState, 4>& des
 }
 
 const frc::SwerveDriveKinematics<4> DriveConstants::kDriveKinematics{
-    frc::Translation2d{meter_t{kWheelBase / 2}, -meter_t{kTrackWidth / 2}},
-    frc::Translation2d{meter_t{kWheelBase / 2}, meter_t{kTrackWidth / 2}},
-    frc::Translation2d{-meter_t{kWheelBase / 2}, -meter_t{kTrackWidth / 2}},
-    frc::Translation2d{-meter_t{kWheelBase / 2}, meter_t{kTrackWidth / 2}}};
+    frc::Translation2d{kWheelBase / 2, -kTrackWidth / 2},
+    frc::Translation2d{kWheelBase / 2, kTrackWidth / 2},
+    frc::Translation2d{-kWheelBase / 2, -kTrackWidth / 2},
+    frc::Translation2d{-kWheelBase / 2, kTrackWidth / 2}};
