@@ -90,11 +90,14 @@ static constexpr meters_per_second_t kDriveEncoderRPM2MeterPerSec = kDriveEncode
 static constexpr radians_per_second_t kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60_s;
 static constexpr double kPTurning = 0.5;
 static constexpr double kPDrive = 0.5;
+static constexpr units::volt_t kSDrive = 12_V;
+static constexpr units::volt_t kSTurning = 12_V;
+static constexpr units::volt_t kVDrive = 0.8_V;
+static constexpr units::volt_t kVTurning = 0.8_V;
 }  // namespace ModuleConstants
 
 namespace OIConstants {
 static constexpr int kDriverControllerPort = 0;
-
 static constexpr int kDriverYAxis = 1;
 static constexpr int kDriverXAxis = 0;
 static constexpr int kDriverRotAxis = 4;

@@ -16,6 +16,7 @@
 #include <frc/motorcontrol/Spark.h>
 #include <frc/trajectory/TrapezoidProfile.h>
 #include <frc/drive/RobotDriveBase.h>
+#include <frc/controller/SimpleMotorFeedforward.h>
 
 #include <rev/CANSparkMax.h>
 #include <rev/CANSparkMaxLowLevel.h>
@@ -62,11 +63,17 @@ class SwerveModule {
   frc::AnalogInput absoluteEncoder;
   bool absoluteEncoderReversed;
   radian_t absoluteEncoderOffsetRad;
+
   frc2::PIDController m_drivePIDController{
       ModuleConstants::kPDrive, 0, 0};
+  frc::SimpleMotorFeedforward<units::meters> m_driveFeedforward{ModuleConstants::kSDrive,
+                                                                ModuleConstants::kVDrive * (1_s/1_m)};
   frc::ProfiledPIDController<units::radians> m_turningPIDController{
       ModuleConstants::kPTurning,
       0.0,
       0.0,
       {kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration}};
+  frc::SimpleMotorFeedforward<units::radians> m_turningFeedforward{
+      ModuleConstants::kSTurning,
+      ModuleConstants::kVTurning * (1_s/1_rad)};
 };

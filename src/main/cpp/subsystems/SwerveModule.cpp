@@ -74,13 +74,17 @@ void SwerveModule::SetDesiredState(
   const auto driveOutput = m_drivePIDController.Calculate(
       m_driveEncoder.GetVelocity(), state.speed.value());
 
+  const auto driveFeedforwardOutput = m_driveFeedforward.Calculate(state.speed);
+
   // Calculate the turning motor output from the turning PID controller.
-  auto turnOutput = m_turningPIDController.Calculate(
+  const auto turnOutput = m_turningPIDController.Calculate(
       units::radian_t{m_turningEncoder.GetPosition()}, state.angle.Radians());
+  
+  const auto turnFeedforwardOutput = m_turningFeedforward.Calculate(m_turningPIDController.GetSetpoint().velocity);
 
   // Set the motor outputs.
-  m_driveMotor.Set(driveOutput);
-  m_turningMotor.Set(turnOutput);
+  m_driveMotor.SetVoltage(units::volt_t{driveOutput} + driveFeedforwardOutput);
+  m_turningMotor.SetVoltage(units::volt_t{turnOutput} + turnFeedforwardOutput);
 }
 
 void SwerveModule::ResetEncoders() {
