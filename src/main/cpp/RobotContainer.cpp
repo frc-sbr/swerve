@@ -38,10 +38,12 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
 
     frc::Trajectory trajectory = frc::TrajectoryGenerator::GenerateTrajectory(
         frc::Pose2d{0_m, 0_m, 0_rad},
-        {},
+        {frc::Translation2d{2.5_m, 0_m},
+         frc::Translation2d{2.5_m, 2.5_m},
+         frc::Translation2d{5_m, 2.5_m}},
         frc::Pose2d{5_m, 0_m, 0_rad},
         config
-    );
+    ); // random trajectory just change it later
 
     frc2::PIDController xController{AutoConstants::kAutoPXController, 0, 0};
     frc2::PIDController yController{AutoConstants::kAutoPYController, 0, 0};
