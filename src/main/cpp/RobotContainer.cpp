@@ -34,7 +34,7 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
         AutoConstants::kAutoMaxSpeed,
         AutoConstants::kAutoMaxAcceleration
     };
-    config.SetKinematics(swerveSubsystem.kDriveKinematics);
+    config.SetKinematics(DriveConstants::kDriveKinematics);
 
     frc::Trajectory trajectory = frc::TrajectoryGenerator::GenerateTrajectory(
         frc::Pose2d{0_m, 0_m, 0_rad},
@@ -58,7 +58,7 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
     frc2::SwerveControllerCommand<4> swerveControllerCommand{
         trajectory,
         [&]() {return swerveSubsystem.GetPose();},
-        swerveSubsystem.kDriveKinematics,
+        DriveConstants::kDriveKinematics,
         xController,
         yController,
         thetaController,

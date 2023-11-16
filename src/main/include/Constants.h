@@ -34,6 +34,12 @@ static constexpr meter_t kTrackWidth = 30_in; // TODO: check with mechanical
 static constexpr meter_t kWheelBase = 30_in; // TODO: check with mechanical
 // Distance between front and back wheels
 
+static frc::SwerveDriveKinematics<4> kDriveKinematics{
+      frc::Translation2d{DriveConstants::kWheelBase / 2, DriveConstants::kTrackWidth / 2},
+      frc::Translation2d{DriveConstants::kWheelBase / 2, -DriveConstants::kTrackWidth / 2},
+      frc::Translation2d{-DriveConstants::kWheelBase / 2, DriveConstants::kTrackWidth / 2},
+      frc::Translation2d{-DriveConstants::kWheelBase / 2, -DriveConstants::kTrackWidth / 2}};
+
 // TODO: the following data is ALL WRONG. I COPY PASTED THIS FROM A YOUTUBE VIDEO. I AM NOT LOOKING FORWARD TO FIGURING ALL OF THIS OUT.
 static constexpr int kFrontLeftDriveMotorPort = 8;
 static constexpr int kBackLeftDriveMotorPort = 2;

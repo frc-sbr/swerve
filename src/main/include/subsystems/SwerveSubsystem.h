@@ -60,12 +60,6 @@ class SwerveSubsystem : public frc2::SubsystemBase {
    */
   void ZeroHeading();
 
-  frc::SwerveDriveKinematics<4> kDriveKinematics{
-      frc::Translation2d{DriveConstants::kWheelBase / 2, DriveConstants::kTrackWidth / 2},
-      frc::Translation2d{DriveConstants::kWheelBase / 2, -DriveConstants::kTrackWidth / 2},
-      frc::Translation2d{-DriveConstants::kWheelBase / 2, DriveConstants::kTrackWidth / 2},
-      frc::Translation2d{-DriveConstants::kWheelBase / 2, -DriveConstants::kTrackWidth / 2}};
-
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
@@ -75,7 +69,7 @@ class SwerveSubsystem : public frc2::SubsystemBase {
   SwerveModule m_frontRight;
   SwerveModule m_backRight;
 
-  frc::SwerveDriveOdometry<4> m_odometry{kDriveKinematics, frc::Rotation2d{0_deg},
+  frc::SwerveDriveOdometry<4> m_odometry{DriveConstants::kDriveKinematics, frc::Rotation2d{0_deg},
     {m_frontLeft.GetPosition(), m_frontRight.GetPosition(),
     m_backLeft.GetPosition(), m_backRight.GetPosition()},
     frc::Pose2d{0_m, 0_m, 0_rad}};
