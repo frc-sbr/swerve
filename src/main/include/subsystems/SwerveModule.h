@@ -27,7 +27,7 @@
 class SwerveModule {
  public:
   SwerveModule(int driveMotorId, int turningMotorId, bool driveMotorReversed, bool turningMotorReversed,
-                 int absoluteEncoderId, units::radian_t absoluteEncoderOffset, bool absoluteEncoderReversed);
+                 int absoluteEncoderId);
 
   frc::SwerveModuleState GetState();
 
@@ -61,8 +61,6 @@ class SwerveModule {
   units::radian_t GetAbsoluteEncoderRad();
 
   frc::AnalogInput absoluteEncoder;
-  bool absoluteEncoderReversed;
-  radian_t absoluteEncoderOffsetRad;
 
   frc2::PIDController m_drivePIDController{
       ModuleConstants::kPDrive, 0, 0};

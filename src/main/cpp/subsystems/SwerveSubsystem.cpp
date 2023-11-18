@@ -19,27 +19,22 @@ SwerveSubsystem::SwerveSubsystem()
                   kFrontLeftTurningMotorPort,
                   kFrontLeftDriveEncoderReversed,
                   kFrontLeftTurningEncoderReversed,
-                  kFrontLeftDriveAbsoluteEncoderPort,
-                  kFrontLeftDriveAbsoluteEncoderOffsetRad, 
-                  kFrontLeftDriveAbsoluteEncoderReversed},
+                  kFrontLeftDriveAbsoluteEncoderPort},
 
       m_backLeft{
           kBackLeftDriveMotorPort,       kBackLeftTurningMotorPort,
           kBackLeftDriveEncoderReversed, kBackLeftTurningEncoderReversed,
-          kBackLeftDriveAbsoluteEncoderPort, kBackLeftDriveAbsoluteEncoderOffsetRad,
-          kBackLeftDriveAbsoluteEncoderReversed},
+          kBackLeftDriveAbsoluteEncoderPort},
 
       m_frontRight{
           kFrontRightDriveMotorPort,       kFrontRightTurningMotorPort,
           kFrontRightDriveEncoderReversed, kFrontRightTurningEncoderReversed,
-          kFrontRightDriveAbsoluteEncoderPort, kFrontRightDriveAbsoluteEncoderOffsetRad,
-          kFrontRightDriveAbsoluteEncoderReversed},
+          kFrontRightDriveAbsoluteEncoderPort},
 
       m_backRight{
           kBackRightDriveMotorPort,       kBackRightTurningMotorPort,
           kBackRightDriveEncoderReversed, kBackRightTurningEncoderReversed,
-          kBackRightDriveAbsoluteEncoderPort, kBackRightDriveAbsoluteEncoderOffsetRad,
-          kBackRightDriveAbsoluteEncoderReversed}, 
+          kBackRightDriveAbsoluteEncoderPort}, 
       
       m_gyro{frc::SPI::Port::kMXP}
   {
@@ -55,6 +50,20 @@ void SwerveSubsystem::Periodic() {
     {m_frontLeft.GetPosition(), m_frontRight.GetPosition(), m_backLeft.GetPosition(), m_backRight.GetPosition()});
 }
 
+void SwerveSubsystem::Drive(units::meters_per_second_t xSpeed,
+                           units::meters_per_second_t ySpeed,
+                           units::radians_per_second_t rot,
+                           bool fieldRelative) {
+    frc::ChassisSpeeds chassisSpeeds;
+    if (fieldRelative) {
+        chassisSpeeds = frc::ChassisSpeeds::FromFieldRelativeSpeeds(xSpeed, ySpeed, rot, GetRotation2d());
+    } else {
+        chassisSpeeds = frc::ChassisSpeeds{xSpeed, ySpeed, rot};
+    }
+
+    wpi::array<frc::SwerveModuleState, 4> moduleStates = DriveConstants::kDriveKinematics.ToSwerveModuleStates(chassisSpeeds);
+    SetModuleStates(moduleStates);
+}
 
 void SwerveSubsystem::SetModuleStates(
     wpi::array<frc::SwerveModuleState, 4> desiredStates) {

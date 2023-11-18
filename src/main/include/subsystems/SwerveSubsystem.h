@@ -35,6 +35,10 @@ class SwerveSubsystem : public frc2::SubsystemBase {
    */
   void ResetEncoders();
 
+  void Drive(units::meters_per_second_t xSpeed,
+                           units::meters_per_second_t ySpeed,
+                           units::radians_per_second_t rot,
+                           bool fieldRelative);
   /**
    * Sets the drive MotorControllers to a power from -1 to 1.
    */

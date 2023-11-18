@@ -66,16 +66,6 @@ static constexpr int kBackLeftDriveAbsoluteEncoderPort = 2;
 static constexpr int kFrontRightDriveAbsoluteEncoderPort = 1;
 static constexpr int kBackRightDriveAbsoluteEncoderPort = 3;
 
-static constexpr bool kFrontLeftDriveAbsoluteEncoderReversed = false;
-static constexpr bool kBackLeftDriveAbsoluteEncoderReversed = false;
-static constexpr bool kFrontRightDriveAbsoluteEncoderReversed = false;
-static constexpr bool kBackRightDriveAbsoluteEncoderReversed = false;
-
-static constexpr radian_t kFrontLeftDriveAbsoluteEncoderOffsetRad = -0.254_rad;
-static constexpr radian_t kBackLeftDriveAbsoluteEncoderOffsetRad = -1.252_rad;
-static constexpr radian_t kFrontRightDriveAbsoluteEncoderOffsetRad = -1.816_rad;
-static constexpr radian_t kBackRightDriveAbsoluteEncoderOffsetRad = -4.811_rad;
-
 static constexpr meters_per_second_t kPhysicalMaxSpeedMetersPerSecond = 5_mps;
 static constexpr radians_per_second_t kPhysicalMaxAngularSpeedRadiansPerSecond = radians_per_second_t{2 * 2 * M_PI};
 

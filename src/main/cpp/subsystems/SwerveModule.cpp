@@ -21,16 +21,14 @@
 #include "Constants.h"
 
 SwerveModule::SwerveModule(int driveMotorId, int turningMotorId, bool driveMotorReversed, bool turningMotorReversed,
-    int absoluteEncoderId, radian_t absoluteEncoderOffset, bool absoluteEncoderReversed) :
+    int absoluteEncoderId) :
         m_driveMotor{driveMotorId, rev::CANSparkMaxLowLevel::MotorType::kBrushless},
         m_turningMotor{turningMotorId, rev::CANSparkMaxLowLevel::MotorType::kBrushless},
 
         m_driveEncoder{m_driveMotor.GetEncoder()},
         m_turningEncoder{m_turningMotor.GetEncoder()},
 
-        absoluteEncoder{absoluteEncoderId},
-        absoluteEncoderReversed{absoluteEncoderReversed},
-        absoluteEncoderOffsetRad{absoluteEncoderOffset} {
+        absoluteEncoder{absoluteEncoderId}{
 
   m_driveEncoder.SetPositionConversionFactor(ModuleConstants::kDriveEncoderRot2Meter.value());
   m_driveEncoder.SetVelocityConversionFactor(ModuleConstants::kDriveEncoderRPM2MeterPerSec.value());
@@ -56,8 +54,7 @@ frc::SwerveModulePosition SwerveModule::GetPosition() {
 radian_t SwerveModule::GetAbsoluteEncoderRad() {
     radian_t angle = radian_t{absoluteEncoder.GetVoltage() / frc::RobotController::GetVoltage5V()};
     angle *= 2 * M_PI;
-    angle -= absoluteEncoderOffsetRad;
-    return angle * (absoluteEncoderReversed ? -1.0 : 1.0);
+    return angle;
 }
 
 void SwerveModule::SetDesiredState(

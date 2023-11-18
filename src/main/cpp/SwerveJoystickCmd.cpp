@@ -46,15 +46,7 @@ void SwerveJoystickCmd::Execute() {
     ySpeed = yLimiter.Calculate(ySpeed) * (DriveConstants::kTeleDriveMaxSpeedMetersPerSecond.value());
     turningSpeed = turningLimiter.Calculate(turningSpeed) * (DriveConstants::kTeleDriveMaxAngularSpeedRadiansPerSecond.value());
 
-    frc::ChassisSpeeds chassisSpeeds;
-    if (fieldOrientedFunction()) {
-        chassisSpeeds = frc::ChassisSpeeds::FromFieldRelativeSpeeds(xSpeed, ySpeed, turningSpeed, swerveSubsystem->GetRotation2d());
-    } else {
-        chassisSpeeds = frc::ChassisSpeeds{xSpeed, ySpeed, turningSpeed};
-    }
-
-    wpi::array<frc::SwerveModuleState, 4> moduleStates = swerveSubsystem->kDriveKinematics.ToSwerveModuleStates(chassisSpeeds);
-    swerveSubsystem->SetModuleStates(moduleStates);
+    swerveSubsystem->Drive(xSpeed, ySpeed, turningSpeed, fieldOrientedFunction());
 }
 
 void SwerveJoystickCmd::End(bool interrupted) {
