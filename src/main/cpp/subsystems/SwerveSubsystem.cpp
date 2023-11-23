@@ -67,7 +67,7 @@ void SwerveSubsystem::Drive(units::meters_per_second_t xSpeed,
 
 void SwerveSubsystem::SetModuleStates(
     wpi::array<frc::SwerveModuleState, 4> desiredStates) {
-  kDriveKinematics.DesaturateWheelSpeeds(&desiredStates, kPhysicalMaxSpeedMetersPerSecond);
+  kDriveKinematics.DesaturateWheelSpeeds(&desiredStates, kMaxSpeed);
   
   m_frontLeft.SetDesiredState(desiredStates[0]);
   m_frontRight.SetDesiredState(desiredStates[1]);

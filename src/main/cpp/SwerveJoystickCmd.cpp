@@ -23,9 +23,9 @@ SwerveJoystickCmd::SwerveJoystickCmd(SwerveSubsystem* swerveSubsystem,
         turningSpdFunction{turningSpdFunction},
         fieldOrientedFunction{fieldOrientedFunction},
 
-        xLimiter{DriveConstants::kTeleDriveMaxAccelerationUnitsPerSecond},
-        yLimiter{DriveConstants::kTeleDriveMaxAccelerationUnitsPerSecond},
-        turningLimiter{DriveConstants::kTeleDriveMaxAngularAccelerationUnitsPerSecond}
+        xLimiter{DriveConstants::kMaxAcceleration},
+        yLimiter{DriveConstants::kMaxAcceleration},
+        turningLimiter{DriveConstants::kMaxAngularAcceleration}
 {
     AddRequirements(swerveSubsystem);
 }
@@ -42,9 +42,9 @@ void SwerveJoystickCmd::Execute() {
     turningSpeed = (math::abs(turningSpeed) > radians_per_second_t{OIConstants::kDeadband.value()})
         ? turningSpeed : 0.0_rad_per_s;
 
-    xSpeed = xLimiter.Calculate(xSpeed) * (DriveConstants::kTeleDriveMaxSpeedMetersPerSecond.value());
-    ySpeed = yLimiter.Calculate(ySpeed) * (DriveConstants::kTeleDriveMaxSpeedMetersPerSecond.value());
-    turningSpeed = turningLimiter.Calculate(turningSpeed) * (DriveConstants::kTeleDriveMaxAngularSpeedRadiansPerSecond.value());
+    xSpeed = xLimiter.Calculate(xSpeed) * (DriveConstants::kMaxSpeed.value());
+    ySpeed = yLimiter.Calculate(ySpeed) * (DriveConstants::kMaxSpeed.value());
+    turningSpeed = turningLimiter.Calculate(turningSpeed) * (DriveConstants::kMaxAngularSpeed.value());
 
     swerveSubsystem->Drive(xSpeed, ySpeed, turningSpeed, fieldOrientedFunction());
 }

@@ -31,8 +31,8 @@ void RobotContainer::ConfigureButtonBindings() {
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {
     frc::TrajectoryConfig config{
-        AutoConstants::kAutoMaxSpeed,
-        AutoConstants::kAutoMaxAcceleration
+        DriveConstants::kMaxSpeed,
+        DriveConstants::kMaxAcceleration
     };
     config.SetKinematics(DriveConstants::kDriveKinematics);
 

@@ -66,14 +66,10 @@ static constexpr int kBackLeftDriveAbsoluteEncoderPort = 2;
 static constexpr int kFrontRightDriveAbsoluteEncoderPort = 1;
 static constexpr int kBackRightDriveAbsoluteEncoderPort = 3;
 
-static constexpr meters_per_second_t kPhysicalMaxSpeedMetersPerSecond = 5_mps;
-static constexpr radians_per_second_t kPhysicalMaxAngularSpeedRadiansPerSecond = radians_per_second_t{2 * 2 * M_PI};
-
-static constexpr meters_per_second_t kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond / 4;
-static constexpr radians_per_second_t kTeleDriveMaxAngularSpeedRadiansPerSecond = kPhysicalMaxAngularSpeedRadiansPerSecond / 4;
-
-static constexpr meters_per_second_squared_t kTeleDriveMaxAccelerationUnitsPerSecond = 3_mps_sq;
-static constexpr radians_per_second_squared_t kTeleDriveMaxAngularAccelerationUnitsPerSecond = 3_rad_per_s_sq;
+static constexpr meters_per_second_t kMaxSpeed = 5_mps;
+static constexpr radians_per_second_t kMaxAngularSpeed = radians_per_second_t{2 * 2 * M_PI};
+static constexpr meters_per_second_squared_t kMaxAcceleration = 3_mps_sq;
+static constexpr radians_per_second_squared_t kMaxAngularAcceleration = 3_rad_per_s_sq;
 }  // namespace DriveConstants
 
 namespace ModuleConstants {
@@ -103,15 +99,10 @@ static constexpr meters_per_second_t kDeadband = 0.05_mps;
 }  // namespace OIConstants
 
 namespace AutoConstants {
-    static constexpr meters_per_second_t kAutoMaxSpeed = DriveConstants::kPhysicalMaxSpeedMetersPerSecond / 4;
-    static constexpr radians_per_second_t kAutoMaxAngularSpeed = DriveConstants::kPhysicalMaxAngularSpeedRadiansPerSecond / 10;
-    static constexpr meters_per_second_squared_t kAutoMaxAcceleration = 3_mps_sq;
-    static constexpr radians_per_second_squared_t kAutoMaxAngularAcceleration = M_PI * 0.25_rad_per_s_sq;
-
     static constexpr double kAutoPXController = 0.5;
     static constexpr double kAutoPYController = 0.5;
     static constexpr double kAutoPThetaController = 0.5;
 
-    static const frc::TrapezoidProfile<units::radians>::Constraints kAutoThetaControllerConstraints{AutoConstants::kAutoMaxAngularSpeed, AutoConstants::kAutoMaxAngularAcceleration};
+    static const frc::TrapezoidProfile<units::radians>::Constraints kAutoThetaControllerConstraints{DriveConstants::kMaxAngularSpeed, DriveConstants::kMaxAngularAcceleration};
 
 }  // namespace AutoConstants
